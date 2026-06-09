@@ -1,0 +1,31 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# Build
+bin/
+obj/
+
+# NuGet
+packages/
+.nuget/
+
+# Logs
+*.log
+
+# Publish
+publish/
+
+# ASP.NET
+wwwroot/uploads/
+
+# User Secrets
+secrets.json
+
+# OS Files
+.DS_Store
+Thumbs.db

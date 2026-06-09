@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Horizon.API/Horizon.API.csproj" Id="2e35f4b2-a205-4ee2-9c22-d23a1e742ba8" />
+  <Project Path="Horizon.Application/Horizon.Application.csproj" />
+  <Project Path="Horizon.Domain/Horizon.Domain.csproj" />
+  <Project Path="Horizon.Infrastructure/Horizon.Infrastructure.csproj" />
+</Solution>
