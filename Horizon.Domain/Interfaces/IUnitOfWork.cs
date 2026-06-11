@@ -32,6 +32,8 @@ public interface IUnitOfWork : IDisposable
     ICertificateRepository Certificates { get; }
     IQuizRepository Quizzes { get; }
     IQuizAttemptRepository QuizAttempts { get; }
+    IQuestionRepository Questions { get; }
+    IAnswerOptionRepository AnswerOptions { get; }
     IAssignmentRepository Assignments { get; }
     IAssignmentSubmissionRepository AssignmentSubmissions { get; }
 
@@ -49,6 +51,8 @@ public interface IUnitOfWork : IDisposable
     IPaymentRepository Payments { get; }
     IRefundRequestRepository RefundRequests { get; }
     ICouponRepository Coupons { get; }
+    ICouponCourseRepository CouponCourses { get; }
+    ICouponCategoryRepository CouponCategories { get; }
     ICouponUsageRepository CouponUsages { get; }
     IWishlistRepository Wishlists { get; }
     ICartItemRepository CartItems { get; }

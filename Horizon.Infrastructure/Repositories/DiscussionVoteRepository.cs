@@ -3,6 +3,8 @@
 using Horizon.Domain.Entities;
 using Horizon.Domain.Repositories;
 using Horizon.Infrastructure.Data;
+using Horizon.Infrastructure.Seeding;
+using Microsoft.EntityFrameworkCore;
 
 namespace Horizon.Infrastructure.Repositories
 {
@@ -13,5 +15,8 @@ namespace Horizon.Infrastructure.Repositories
             : base(context)
         {
         }
+
+        public async Task<DiscussionVote?> GetByUserAndReplyAsync(Guid UserId, Guid ReplyId, CancellationToken ct = default)
+         => await _dbSet.FirstOrDefaultAsync(d => d.UserId == UserId && d.ReplyId == ReplyId, ct);
     }
 }

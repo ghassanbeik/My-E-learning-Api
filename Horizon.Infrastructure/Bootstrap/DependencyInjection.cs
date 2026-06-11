@@ -83,6 +83,8 @@ namespace Horizon.Infrastructure.Bootstrap
             services.AddScoped<ICertificateRepository, CertificateRepository>();
             services.AddScoped<IQuizRepository, QuizRepository>();
             services.AddScoped<IQuizAttemptRepository, QuizAttemptRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
             services.AddScoped<IAssignmentSubmissionRepository, AssignmentSubmissionRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -94,6 +96,8 @@ namespace Horizon.Infrastructure.Bootstrap
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IRefundRequestRepository, RefundRequestRepository>();
             services.AddScoped<ICouponRepository, CouponRepository>();
+            services.AddScoped<ICouponCourseRepository, CouponCourseRepository>();
+            services.AddScoped<ICouponCategoryRepository, CouponCategoryRepository>();
             services.AddScoped<ICouponUsageRepository, CouponUsageRepository>();
             services.AddScoped<IWishlistRepository, WishlistRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();

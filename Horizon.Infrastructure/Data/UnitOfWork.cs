@@ -38,6 +38,8 @@ public class UnitOfWork : IUnitOfWork
     private ICertificateRepository? _certificates;
     private IQuizRepository? _quizzes;
     private IQuizAttemptRepository? _quizAttempts;
+    private IQuestionRepository? _questions;
+    private IAnswerOptionRepository? _answerOptions;
     private IAssignmentRepository? _assignments;
     private IAssignmentSubmissionRepository? _assignmentSubmissions;
 
@@ -55,6 +57,8 @@ public class UnitOfWork : IUnitOfWork
     private IPaymentRepository? _payments;
     private IRefundRequestRepository? _refundRequests;
     private ICouponRepository? _coupons;
+    private ICouponCourseRepository? _couponCourses;
+    private ICouponCategoryRepository? _couponCategories;
     private ICouponUsageRepository? _couponUsages;
     private IWishlistRepository? _wishlists;
     private ICartItemRepository? _cartItems;
@@ -151,6 +155,10 @@ public class UnitOfWork : IUnitOfWork
         => _refundRequests ??= new RefundRequestRepository(_context);
     public ICouponRepository Coupons
         => _coupons ??= new CouponRepository(_context);
+    public ICouponCourseRepository CouponCourses
+        => _couponCourses ??= new CouponCourseRepository(_context);
+    public ICouponCategoryRepository CouponCategories
+        => _couponCategories ??= new CouponCategoryRepository(_context);
     public ICouponUsageRepository CouponUsages
         => _couponUsages ??= new CouponUsageRepository(_context);
     public IWishlistRepository Wishlists
@@ -170,6 +178,11 @@ public class UnitOfWork : IUnitOfWork
     public ISearchLogRepository SearchLogs
         => _searchLogs ??= new SearchLogRepository(_context);
 
+    public IQuestionRepository Questions 
+        => _questions??=new QuestionRepository(_context);
+
+    public IAnswerOptionRepository AnswerOptions 
+        => _answerOptions ??= new AnswerOptionRepository(_context);
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
