@@ -88,6 +88,7 @@ namespace Horizon.Infrastructure.Bootstrap
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
             services.AddScoped<IAssignmentSubmissionRepository, AssignmentSubmissionRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IReviewResponseRepository, ReviewResponseRepository>();
             services.AddScoped<IDiscussionRepository, DiscussionRepository>();
             services.AddScoped<IDiscussionReplyRepository, DiscussionReplyRepository>();
             services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();

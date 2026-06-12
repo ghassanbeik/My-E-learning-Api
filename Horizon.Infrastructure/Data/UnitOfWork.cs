@@ -45,6 +45,7 @@ public class UnitOfWork : IUnitOfWork
 
     // ─── Engagement ──────────────────────────────────────────────────────────
     private IReviewRepository? _reviews;
+    private IReviewResponseRepository? _reviewResponses;
     private IReviewVoteRepository? _reviewVotes;
     private IDiscussionRepository? _discussions;
     private IDiscussionVoteRepository? _discussionVotes;
@@ -133,6 +134,9 @@ public class UnitOfWork : IUnitOfWork
     // ─── Engagement Properties ────────────────────────────────────────────────
     public IReviewRepository Reviews
         => _reviews ??= new ReviewRepository(_context);
+
+    public IReviewResponseRepository ReviewResponses
+       => _reviewResponses ??= new ReviewResponseRepository(_context);
     public IReviewVoteRepository ReviewVotes
         => _reviewVotes ??= new ReviewVoteRepository(_context);
     public IDiscussionRepository Discussions

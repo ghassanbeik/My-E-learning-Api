@@ -39,6 +39,7 @@ public interface IUnitOfWork : IDisposable
 
     // ─── Engagement ──────────────────────────────────────────────────────────
     IReviewRepository Reviews { get; }
+    IReviewResponseRepository ReviewResponses { get; }
     IReviewVoteRepository ReviewVotes { get; }
     IDiscussionRepository Discussions { get; }
     IDiscussionVoteRepository DiscussionVotes { get; }
