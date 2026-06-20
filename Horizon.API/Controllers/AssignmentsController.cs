@@ -9,6 +9,7 @@ using Horizon.Domain.Interfaces.Services.StorageServices;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Horizon.API.Controllers
 {
@@ -54,7 +55,8 @@ namespace Horizon.API.Controllers
             => FromResult(await _mediator.Send(new GetMySubmissionQuery(id, UserId), ct));
 
         /// <summary>Upload assignment file</summary>
-        [HttpPost("{id:guid}/upload")]
+            [EnableRateLimiting("upload")]
+    [HttpPost("{id:guid}/upload")]
         [Authorize]
         [ProducesResponseType(typeof(ApiResponse<string>), 200)]
         public async Task<IActionResult> UploadFile(Guid id, IFormFile file, CancellationToken ct)

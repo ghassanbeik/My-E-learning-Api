@@ -118,3 +118,9 @@ public enum DiscussionType
     Feedback = 2,
     Bug      = 3,
 }
+
+public enum VerificationTokenType
+{
+    EmailVerification = 0,
+    PasswordReset     = 1,
+}

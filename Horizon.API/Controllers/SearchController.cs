@@ -4,10 +4,12 @@ using Horizon.Application.Features.Search.GetSearchSuggestions;
 using Horizon.Application.Features.Search.Search;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Horizon.API.Controllers
 {
     [Route("api/search")]
+[EnableRateLimiting("search")]
     public class SearchController : BaseController
     {
         private readonly IMediator _mediator;

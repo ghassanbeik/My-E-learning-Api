@@ -73,6 +73,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<CourseAnalytics> CourseAnalytics => Set<CourseAnalytics>();
     public DbSet<PlatformAnalytics> PlatformAnalytics => Set<PlatformAnalytics>();
     public DbSet<SearchLog> SearchLogs => Set<SearchLog>();
+    public DbSet<VerificationToken> VerificationTokens => Set<VerificationToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -147,12 +147,20 @@ options.AddPolicy(
 
 builder.Services.AddCors(options =>
 {
+    // Development — allow any origin so the frontend dev server works freely.
     options.AddPolicy("AllowAll", policy =>
-    {
         policy.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-    });
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+
+    // Production — restrict to origins declared in appsettings.
+    options.AddPolicy("ProductionPolicy", policy =>
+        policy.WithOrigins(
+                builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
+                    ?? new[] { "https://horizon.com" })
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials());
 });
 
 // ─────────────────────────────────────────────────────────────
@@ -161,20 +169,59 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddRateLimiter(options =>
 {
-    options.RejectionStatusCode =
-    StatusCodes.Status429TooManyRequests;
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
+    // ── Global default ─────────────────────────────────────────────────────
+    // Applied automatically to every endpoint; [EnableRateLimiting("auth")]
+    // etc. override this with stricter named policies where needed.
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(ctx =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: ctx.User.Identity?.Name
+                          ?? ctx.Connection.RemoteIpAddress?.ToString()
+                          ?? "anon",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit          = 100,
+                Window               = TimeSpan.FromMinutes(1),
+                QueueLimit           = 10,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            }));
 
-options.AddFixedWindowLimiter("fixed", limiter =>
-{
-    limiter.PermitLimit = 100;
-    limiter.Window = TimeSpan.FromMinutes(1);
-    limiter.QueueLimit = 10;
-    limiter.QueueProcessingOrder =
-        QueueProcessingOrder.OldestFirst;
-});
+    // ── Auth — brute-force protection ─────────────────────────────────────
+    options.AddFixedWindowLimiter("auth", o =>
+    {
+        o.PermitLimit          = 10;
+        o.Window               = TimeSpan.FromMinutes(15);
+        o.QueueLimit           = 0;
+        o.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
 
+    // ── File uploads ──────────────────────────────────────────────────────
+    options.AddFixedWindowLimiter("upload", o =>
+    {
+        o.PermitLimit          = 20;
+        o.Window               = TimeSpan.FromHours(1);
+        o.QueueLimit           = 5;
+        o.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
 
+    // ── Search / browse ───────────────────────────────────────────────────
+    options.AddFixedWindowLimiter("search", o =>
+    {
+        o.PermitLimit          = 60;
+        o.Window               = TimeSpan.FromMinutes(1);
+        o.QueueLimit           = 5;
+        o.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
+
+    // ── Stripe webhook — high limit (signature is the real auth) ─────────
+    options.AddFixedWindowLimiter("webhook", o =>
+    {
+        o.PermitLimit          = 500;
+        o.Window               = TimeSpan.FromMinutes(1);
+        o.QueueLimit           = 50;
+        o.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
 });
 
 // ─────────────────────────────────────────────────────────────
@@ -239,7 +286,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseResponseCaching();
-app.UseCors("AllowAll");
+app.UseCors(app.Environment.IsDevelopment() ? "AllowAll" : "ProductionPolicy");
 
 app.UseRateLimiter();
 

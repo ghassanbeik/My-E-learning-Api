@@ -39,7 +39,6 @@ public interface IUnitOfWork : IDisposable
 
     // ─── Engagement ──────────────────────────────────────────────────────────
     IReviewRepository Reviews { get; }
-    IReviewResponseRepository ReviewResponses { get; }
     IReviewVoteRepository ReviewVotes { get; }
     IDiscussionRepository Discussions { get; }
     IDiscussionVoteRepository DiscussionVotes { get; }
@@ -64,6 +63,7 @@ public interface IUnitOfWork : IDisposable
     ICourseAnalyticsRepository CourseAnalytics { get; }
     IPlatformAnalyticsRepository PlatformAnalytics { get; }
     ISearchLogRepository SearchLogs { get; }
+    IVerificationTokenRepository VerificationTokens { get; }
 
     // ─── Transactions ────────────────────────────────────────────────────────
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

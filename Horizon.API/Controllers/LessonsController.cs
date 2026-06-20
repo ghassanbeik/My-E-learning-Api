@@ -10,6 +10,7 @@ using Horizon.Infrastructure.Seeding;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Horizon.API.Controllers
 {

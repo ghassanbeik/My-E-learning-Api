@@ -25,6 +25,7 @@ using Horizon.Application.Features.Sections.UpdateSection;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Horizon.API.Controllers;
 

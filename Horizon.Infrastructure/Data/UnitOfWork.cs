@@ -45,7 +45,6 @@ public class UnitOfWork : IUnitOfWork
 
     // ─── Engagement ──────────────────────────────────────────────────────────
     private IReviewRepository? _reviews;
-    private IReviewResponseRepository? _reviewResponses;
     private IReviewVoteRepository? _reviewVotes;
     private IDiscussionRepository? _discussions;
     private IDiscussionVoteRepository? _discussionVotes;
@@ -70,6 +69,7 @@ public class UnitOfWork : IUnitOfWork
     private ICourseAnalyticsRepository? _courseAnalytics;
     private IPlatformAnalyticsRepository? _platformAnalytics;
     private ISearchLogRepository? _searchLogs;
+    private IVerificationTokenRepository? _verificationTokens;
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -134,9 +134,6 @@ public class UnitOfWork : IUnitOfWork
     // ─── Engagement Properties ────────────────────────────────────────────────
     public IReviewRepository Reviews
         => _reviews ??= new ReviewRepository(_context);
-
-    public IReviewResponseRepository ReviewResponses
-       => _reviewResponses ??= new ReviewResponseRepository(_context);
     public IReviewVoteRepository ReviewVotes
         => _reviewVotes ??= new ReviewVoteRepository(_context);
     public IDiscussionRepository Discussions
@@ -181,6 +178,9 @@ public class UnitOfWork : IUnitOfWork
         => _platformAnalytics ??= new PlatformAnalyticsRepository(_context);
     public ISearchLogRepository SearchLogs
         => _searchLogs ??= new SearchLogRepository(_context);
+
+    public IVerificationTokenRepository VerificationTokens
+        => _verificationTokens ??= new VerificationTokenRepository(_context);
 
     public IQuestionRepository Questions 
         => _questions??=new QuestionRepository(_context);

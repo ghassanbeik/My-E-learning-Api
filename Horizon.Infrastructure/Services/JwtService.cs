@@ -43,6 +43,12 @@ namespace Horizon.Infrastructure.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public DateTime GetAccessTokenExpiry()
+        {
+            var minutes = int.Parse(_config["Jwt:AccessTokenExpiryMinutes"] ?? "60");
+            return DateTime.UtcNow.AddMinutes(minutes);
+        }
+
         public string GenerateRefreshToken()
         {
             var bytes = RandomNumberGenerator.GetBytes(64);

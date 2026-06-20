@@ -91,6 +91,7 @@ public class AuthController : BaseController
         => FromResult(await _mediator.Send(new UpdateProfileCommand(UserId, dto), ct));
 
     /// <summary>Upload avatar</summary>
+        [EnableRateLimiting("upload")]
     [HttpPost("avatar")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<string>), 200)]

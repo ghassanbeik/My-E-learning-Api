@@ -1,4 +1,3 @@
-﻿
 using Horizon.Application.Common;
 using Horizon.Application.DTOs;
 using Horizon.Domain.Entities;
@@ -24,25 +23,26 @@ namespace Horizon.Application.Features.Auth.RefreshToken
             var user = await _uow.Users.GetByIdAsync(session.UserId, ct);
             if (user == null) return Result<AuthResponseDto>.Unauthorized();
 
-            var roles = (await _uow.UserRoles.GetUserRoleNamesAsync(user.Id, ct)).ToList();
-            var accessToken = _jwt.GenerateAccessToken(user, roles);
+            var roles        = (await _uow.UserRoles.GetUserRoleNamesAsync(user.Id, ct)).ToList();
+            var accessToken  = _jwt.GenerateAccessToken(user, roles);
             var refreshToken = _jwt.GenerateRefreshToken();
 
             await _uow.Sessions.RevokeSessionAsync(request.Dto.RefreshToken, string.Empty, ct);
             await _uow.Sessions.AddAsync(new Session
             {
-                UserId = user.Id,
+                UserId       = user.Id,
                 RefreshToken = refreshToken,
-                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                ExpiresAt    = DateTime.UtcNow.AddDays(7),
             }, ct);
 
             await _uow.SaveChangesAsync(ct);
 
             return Result<AuthResponseDto>.Success(new AuthResponseDto(
-                accessToken, refreshToken, DateTime.UtcNow.AddHours(1),
+                accessToken,
+                refreshToken,
+                _jwt.GetAccessTokenExpiry(),          // ← was DateTime.UtcNow.AddHours(1)
                 new UserDto(user.Id, user.FirstName, user.LastName, user.FullName,
                             user.Email, user.AvatarUrl, user.Headline, user.IsEmailVerified, roles)));
         }
     }
-
 }
