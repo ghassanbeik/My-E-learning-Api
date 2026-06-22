@@ -12,19 +12,6 @@ using Microsoft.Extensions.Configuration;
 
 namespace Horizon.Application.Features.Payments.ConfirmPayment
 {
-    /// <summary>
-    /// Verifies Stripe has charged the card, then atomically:
-    ///   1. Creates a Payment record with EnrollmentId populated.
-    ///   2. Creates the Enrollment so the student gets course access.
-    ///   3. Records coupon usage (code is read from Stripe metadata —
-    ///      never trusting client-supplied input after the fact).
-    ///   4. Publishes PaymentCompleted + StudentEnrolled events.
-    ///
-    /// Idempotent: a Payment for this PaymentIntentId that already exists
-    /// is returned immediately — no duplicates are created.
-    /// This handles the case where both the Stripe webhook and the client
-    /// both call /confirm (e.g. after a network retry).
-    /// </summary>
     public class ConfirmPaymentHandler : IRequestHandler<ConfirmPaymentCommand, Result<PaymentDto>>
     {
         private readonly IUnitOfWork _uow;
