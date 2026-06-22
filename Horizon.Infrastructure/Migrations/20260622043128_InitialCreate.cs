@@ -553,6 +553,32 @@ namespace Horizon.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "VerificationTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    TokenHash = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VerificationTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_VerificationTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Announcements",
                 columns: table => new
                 {
@@ -2345,6 +2371,16 @@ namespace Horizon.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_VerificationTokens_TokenHash_Type",
+                table: "VerificationTokens",
+                columns: new[] { "TokenHash", "Type" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VerificationTokens_UserId_Type_UsedAt_ExpiresAt",
+                table: "VerificationTokens",
+                columns: new[] { "UserId", "Type", "UsedAt", "ExpiresAt" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Wishlists_CourseId",
                 table: "Wishlists",
                 column: "CourseId");
@@ -2451,6 +2487,9 @@ namespace Horizon.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "VerificationTokens");
 
             migrationBuilder.DropTable(
                 name: "Wishlists");
